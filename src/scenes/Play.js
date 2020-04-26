@@ -8,13 +8,28 @@ class Play extends Phaser.Scene {
         this.load.image('rocket', './assets/rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('starfield', './assets/starfield.png');
+        this.load.image('starfield1', './assets/starfield1.png');
+        this.load.image('starfield2', './assets/starfield2.png');
+        this.load.image('starfield3', './assets/starfield3.png');
+        this.load.image('starfield4', './assets/starfield4.png');
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
 
     create() {
         // place tile sprite
-        this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
+        this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').
+        setOrigin(0, 0);
+        this.starfield0 = this.add.tileSprite(0, 50, 640, 70, 'starfield1').
+        setOrigin(0,0);
+        this.starfield1 = this.add.tileSprite(0, 120, 640, 70, 'starfield1').
+        setOrigin(0,0);
+        this.starfield2 = this.add.tileSprite(0, 190, 640, 70, 'starfield2').
+        setOrigin(0,0);
+        this.starfield3 = this.add.tileSprite(0, 260, 640, 70, 'starfield3').
+        setOrigin(0,0);
+        this.starfield4 = this.add.tileSprite(0, 330, 640, 73, 'starfield4').
+        setOrigin(0,0);
 
         // white rectangle borders
         this.add.rectangle(5, 5, 630, 32, 0xFFFFFF).setOrigin(0, 0);
@@ -25,7 +40,7 @@ class Play extends Phaser.Scene {
         this.add.rectangle(37, 42, 566, 64, 0x00FF00).setOrigin(0, 0);
 
         // add rocket (p1)
-        this.p1Rocket = new Rocket(this, game.config.width/2 - 8, 431, 'rocket').setScale(0.5, 0.5).setOrigin(0, 0);
+        this.p1Rocket = new Rocket(this, game.config.width/2 - 8, 350, 'rocket').setOrigin(0, 0);
 
         // add spaceships (x3)
         this.ship01 = new Spaceship(this, game.config.width + 192, 132, 'spaceship', 0, 30).setOrigin(0,0);
@@ -33,9 +48,11 @@ class Play extends Phaser.Scene {
         this.ship03 = new Spaceship(this, game.config.width, 260, 'spaceship', 0, 10).setOrigin(0,0);
 
         // define keys
-        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
 
         // animation config
         this.anims.create({
@@ -76,7 +93,7 @@ class Play extends Phaser.Scene {
 
     update() {
         // check key input for restart / menu
-        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)) {
+        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
         }
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
@@ -99,10 +116,22 @@ class Play extends Phaser.Scene {
         // 当玩家爆炸，游戏结束
         if (this.gameOver) {
              this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-             this.add.text(game.config.width/2, game.config.height/2 + 64, '(F)ire to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
+             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press R to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
         }
 
-        this.starfield.tilePositionX -= 4;  // scroll tile sprite
+        //scroll starfield
+        this.starfield0.tilePositionX -= 3;
+        this.starfield1.tilePositionX -= 2.5;
+        this.starfield2.tilePositionX -= 2;
+        this.starfield3.tilePositionX -= 1.5;
+        this.starfield4.tilePositionX -= 1;
+
+        this.starfield0.tilePositionY -= 0.3;
+        this.starfield1.tilePositionY -= 0.3;   
+        this.starfield2.tilePositionY -= 0.3;   
+        this.starfield3.tilePositionY -= 0.3;   
+        this.starfield4.tilePositionY -= 0.3; 
+
         if (!this.gameOver) {               
             this.p1Rocket.update();         // update rocket sprite
             this.ship01.update();           // update spaceships (x3)
