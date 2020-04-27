@@ -37,7 +37,7 @@ class Play extends Phaser.Scene {
         this.add.rectangle(5, 5, 32, 455, 0xFFFFFF).setOrigin(0, 0);
         this.add.rectangle(603, 5, 32, 455, 0xFFFFFF).setOrigin(0, 0);
         // green UI background
-        this.add.rectangle(37, 42, 566, 64, 0x00FF00).setOrigin(0, 0);
+        // this.add.rectangle(37, 42, 566, 64, 0x00FF00).setOrigin(0, 0);
 
         // add rocket (p1)
         this.p1Rocket = new Rocket(this, game.config.width/2 - 8, 350, 'rocket').setOrigin(0, 0);
@@ -78,16 +78,69 @@ class Play extends Phaser.Scene {
         }
         this.scoreLeft = this.add.text(69, 54, this.p1Score, scoreConfig);
 
-        // game over flag
+        //typeface for ending
+        let endConfig = {
+            fontFamily: 'fantasy',
+            fontSize: '28px',
+            backgroundColor: '#5DDEDE',
+            color: '#000000',
+            align: 'right',
+            padding: {
+                top:5,
+                bottom:5,
+            },
+            fixedWidth: 100
+        }
+
+
+        //get timer
+        //timer tutorial: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/timer/
+        var timer = this.time.addEvent({
+            delay: 1000,
+            callback: this.isTiming,
+            callbackScope: this,
+            repeat: (game.settings.gameTimer/1000)+1,
+        });
+
+        //game over flag
         this.gameOver = false;
 
-        // 60-second play clock
-        // scoreConfig.fixedWidth = 0;
-        // this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-        //     this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-        //     this.add.text(game.config.width/2, game.config.height/2 + 64, '(F)ire to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
-        //     this.gameOver = true;
-        // }, null, this);
+        //四段加速
+        endConfig.fixedWidth = 0;
+
+        this.clock = this.time.delayedCall(game.settings.gameTimer, () =>{  
+            this.add.text(game.config.width/2, game.config.height/2 - 180, 'Want some challenge?', endConfig).setOrigin(0.5); 
+
+            // this.time.events.add(2000, function() {    
+
+            // game.add.tween('Want some challenge?').to({y: 0}, 1500, Phaser.Easing.Linear.None, true);
+            // game.add.tween('Want some challenge?').to({alpha: 0}, 1500, Phaser.Easing.Linear.None, true);}, this); 渐进渐出效果 暂时不会用……
+
+            game.settings = {
+                spaceshipSpeed: game.settings.spaceshipSpeed+1.5,   
+            }
+        }, null, this);
+
+        this.clock = this.time.delayedCall(game.settings.gameTimer+30000, () =>{  
+            this.add.text(game.config.width/2, game.config.height/2 - 180, 'Want a little bit Faster?', endConfig).setOrigin(0.5); 
+            game.settings = {
+                spaceshipSpeed: game.settings.spaceshipSpeed+2.5,   
+            }
+        }, null, this);
+
+        this.clock = this.time.delayedCall(game.settings.gameTimer+60000, () =>{  
+            this.add.text(game.config.width/2, game.config.height/2 - 180, 'Do you want more speed?', endConfig).setOrigin(0.5); 
+            game.settings = {
+                spaceshipSpeed: game.settings.spaceshipSpeed+3.5,   
+            }
+        }, null, this);
+
+        this.clock = this.time.delayedCall(game.settings.gameTimer+90000, () =>{  
+            this.add.text(game.config.width/2, game.config.height/2 - 180, 'Final Speed!', endConfig).setOrigin(0.5); 
+            game.settings = {
+                spaceshipSpeed: game.settings.spaceshipSpeed+4.5,   
+            }
+        }, null, this);
 
     }
 
@@ -99,6 +152,7 @@ class Play extends Phaser.Scene {
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene");
         }
+        
 
         // score display
         let scoreConfig = {
@@ -165,22 +219,6 @@ class Play extends Phaser.Scene {
         }
     }
 
-    // shipExplode(ship) {
-    //     ship.alpha = 0;                         // temporarily hide ship
-    //     // create explosion sprite at ship's position
-    //     let boom = this.add.sprite(ship.x, ship.y, 'explosion').setOrigin(0, 0);
-    //     boom.anims.play('explode');             // play explode animation
-    //     boom.on('animationcomplete', () => {    // callback after animation completes
-    //         ship.reset();                       // reset ship position
-    //         ship.alpha = 1;                     // make ship visible again
-    //         boom.destroy();                     // remove explosion sprite
-    //     });
-    //     // score increment and repaint
-    //     this.p1Score += ship.points;
-    //     this.scoreLeft.text = this.p1Score;     
-    //     // play sound
-    //     this.sound.play('sfx_explosion');  
-    // }
 
     // 玩家爆炸
     rocketExplode(x, y) {
