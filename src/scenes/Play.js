@@ -7,6 +7,11 @@ class Play extends Phaser.Scene {
         // load images/tile sprites
         this.load.image('rocket', './assets/rocket.png');
         this.load.image('spaceship', './assets/spaceship.png');
+        this.load.image('bottle', './assets/bottle.png');
+        this.load.image('fishship', './assets/fishship.png');
+        this.load.image('wire', './assets/wire.png');
+        this.load.image('hook', './assets/hook.png'); 
+        this.load.image('net', './assets/net.png');   
         this.load.image('starfield', './assets/starfield.png');
         this.load.image('starfield1', './assets/starfield1.png');
         this.load.image('starfield2', './assets/starfield2.png');
@@ -42,10 +47,18 @@ class Play extends Phaser.Scene {
         // add rocket (p1)
         this.p1Rocket = new Rocket(this, game.config.width/2 - 8, 350, 'rocket').setOrigin(0, 0);
 
-        // add spaceships (x3)
+        // add spaceships (x4)
         this.ship01 = new Spaceship(this, game.config.width + 192, 132, 'spaceship', 0, 30).setOrigin(0,0);
-        this.ship02 = new Spaceship(this, game.config.width + 96, 196, 'spaceship', 0, 20).setOrigin(0,0);
-        this.ship03 = new Spaceship(this, game.config.width, 260, 'spaceship', 0, 10).setOrigin(0,0);
+        this.ship02 = new Spaceship(this, game.config.width + 96, 196, 'bottle', 0, 20).setOrigin(0,0);
+        this.ship03 = new Spaceship(this, game.config.width, 260, 'net', 0, 10).setOrigin(0,0);
+        this.ship04 = new Spaceship(this, game.config.width - 96, 340, 'bottle', 0, 10).setOrigin(0,0);
+
+        //船的运动
+        this.ship05 = new Fishship(this, 600, 70, 'fishship').setOrigin(0,0);
+        //鱼线
+        this.ship06 = new Fishwire(this, 630, -70, 'wire').setOrigin(this.x,this.y);
+        //鱼线
+        this.ship07 = new Fishship(this, 625, 170, 'hook').setOrigin(0,0);
 
         // define keys
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -188,11 +201,19 @@ class Play extends Phaser.Scene {
 
         if (!this.gameOver) {               
             this.p1Rocket.update();         // update rocket sprite
-            this.ship01.update();           // update spaceships (x3)
+            this.ship01.update();           // update spaceships (x4)
             this.ship02.update();
             this.ship03.update();
+            this.ship04.update();
+            this.ship05.update();
+            this.ship06.update();
+            this.ship07.update();
         }             
         // check collisions
+        if(this.checkCollision(this.p1Rocket, this.ship04)) {
+            //this.shipExplode(this.ship04); 
+            this.rocketExplode(this.p1Rocket.x, this.p1Rocket.y);
+        }
         if(this.checkCollision(this.p1Rocket, this.ship03)) {
             //this.shipExplode(this.ship03); 
             this.rocketExplode(this.p1Rocket.x, this.p1Rocket.y);

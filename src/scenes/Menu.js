@@ -53,33 +53,18 @@ class Menu extends Phaser.Scene {
         this.textBack =  this.add.tileSprite(centerX, 270, 624, 130, 'textBack').
         setOrigin(0.5);
 
-        this.add.text(centerX, centerY - 130, 'Fish Racing Escape', titleConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY, 'Use arrows to change swimming position', menuConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY + textSpacer, 'Press ← for EASY or → for HARD', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY - 130, 'Where is my play yard', titleConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY, 'Use arrows to avoid obstacles', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY + textSpacer, 'Press → to start', menuConfig).setOrigin(0.5);
         
         // define keys
-        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         
     }
 
     update() {
-        if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-            // easy mode
-            game.settings = {
-                spaceshipSpeed: 2,
-                gameTimer: 45000   
-            }
-            this.sound.play('sfx_select');
-            this.scene.start("playScene");    
-        }
-
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
-            // hard mode
-            game.settings = {
-                spaceshipSpeed: 4,
-                gameTimer: 30000    
-            }
+
             this.sound.play('sfx_select');
             this.scene.start("playScene");    
         }
