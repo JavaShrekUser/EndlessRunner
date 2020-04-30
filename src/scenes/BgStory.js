@@ -1,6 +1,6 @@
-class Menu extends Phaser.Scene {
+class BgStory extends Phaser.Scene {
     constructor(){
-        super("menuScene");
+        super("bgStoryScene");
     }
 
     preload(){
@@ -13,8 +13,8 @@ class Menu extends Phaser.Scene {
     }
 
     create(){
-        //menu display
-        let menuConfig = {
+        //bgStory display
+        let bgStoryConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
             backgroundColor: '#00000000',
@@ -40,22 +40,19 @@ class Menu extends Phaser.Scene {
             fixedWidth:0
         }
 
-        //show menu text
+        //show bgStory text
         let centerX = game.config.width/2;
         let centerY = game.config.height/2;
         let textSpacer = 64;
 
 
-        this.mainBack = this.add.tileSprite(0, 0, 680, 480, 'mainBack').
-        setOrigin(0,0);
-        this.UI =  this.add.tileSprite(centerX, centerY - 130, 551, 64, 'UI old').
-        setOrigin(0.5);
-        this.textBack =  this.add.tileSprite(centerX, 270, 624, 130, 'textBack').
-        setOrigin(0.5);
+        this.mainBack = this.add.tileSprite(0, 0, 680, 480, 'mainBack').setOrigin(0,0);
+        // this.UI =  this.add.tileSprite(centerX, centerY - 130, 551, 64, 'UI old').setOrigin(0.5);
+        this.textBack =  this.add.tileSprite(centerX, 270, 624, 130, 'textBack').setOrigin(0.5);
 
-        this.add.text(centerX, centerY - 130, 'Where is my play yard', titleConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY, 'Use arrows to avoid obstacles', menuConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY + textSpacer, 'To move to the next page, press →', menuConfig).setOrigin(0.5);
+        // this.add.text(centerX, centerY - 130, 'Where is my play yard', titleConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY, '小朋友，你是否有很多问号', bgStoryConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY + textSpacer, 'Press → to start', bgStoryConfig).setOrigin(0.5);
         
         // define keys
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -65,7 +62,7 @@ class Menu extends Phaser.Scene {
     update() {
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
             this.sound.play('sfx_select');
-            this.scene.start('bgStoryScene');    
+            this.scene.start('playScene');    
         }
     }
 }
