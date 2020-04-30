@@ -166,8 +166,6 @@ class Play extends Phaser.Scene {
             this.scene.start("menuScene");
         }
         
-
-        // score display
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
@@ -180,6 +178,7 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 0
         }
+
         // 当玩家爆炸，游戏结束
         if (this.gameOver) {
              this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
