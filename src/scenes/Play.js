@@ -10,31 +10,31 @@ class Play extends Phaser.Scene {
         this.load.image('bottle', './assets/bottle.png');
         this.load.image('fishship', './assets/fishship.png');
         this.load.image('wire', './assets/wire.png');
-        this.load.image('hook', './assets/hook.png'); 
-        this.load.image('net', './assets/net.png');   
+        this.load.image('hook', './assets/hook.png');
+        this.load.image('net', './assets/net.png');
         this.load.image('starfield', './assets/starfield.png');
         this.load.image('starfield1', './assets/starfield1.png');
         this.load.image('starfield2', './assets/starfield2.png');
         this.load.image('starfield3', './assets/starfield3.png');
         this.load.image('starfield4', './assets/starfield4.png');
         // load spritesheet
-        this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
+        this.load.spritesheet('explosion', './assets/explosion.png', { frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9 });
     }
 
     create() {
         // place tile sprite
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').
-        setOrigin(0, 0);
+            setOrigin(0, 0);
         this.starfield0 = this.add.tileSprite(0, 50, 640, 70, 'starfield1').
-        setOrigin(0,0);
+            setOrigin(0, 0);
         this.starfield1 = this.add.tileSprite(0, 120, 640, 70, 'starfield1').
-        setOrigin(0,0);
+            setOrigin(0, 0);
         this.starfield2 = this.add.tileSprite(0, 190, 640, 70, 'starfield2').
-        setOrigin(0,0);
+            setOrigin(0, 0);
         this.starfield3 = this.add.tileSprite(0, 260, 640, 70, 'starfield3').
-        setOrigin(0,0);
+            setOrigin(0, 0);
         this.starfield4 = this.add.tileSprite(0, 330, 640, 73, 'starfield4').
-        setOrigin(0,0);
+            setOrigin(0, 0);
 
         // white rectangle borders
         this.add.rectangle(5, 5, 630, 32, 0xFFFFFF).setOrigin(0, 0);
@@ -45,20 +45,20 @@ class Play extends Phaser.Scene {
         // this.add.rectangle(37, 42, 566, 64, 0x00FF00).setOrigin(0, 0);
 
         // add rocket (p1)
-        this.p1Rocket = new Rocket(this, game.config.width/2 - 8, 350, 'rocket').setOrigin(0, 0);
+        this.p1Rocket = new Rocket(this, game.config.width / 2 - 8, 350, 'rocket').setOrigin(0, 0);
 
         // add spaceships (x4)
-        this.ship01 = new Spaceship(this, game.config.width + 192, 132, 'spaceship', 0, 30).setOrigin(0,0);
-        this.ship02 = new Spaceship(this, game.config.width + 96, 196, 'bottle', 0, 20).setOrigin(0,0);
-        this.ship03 = new Spaceship(this, game.config.width, 260, 'net', 0, 10).setOrigin(0,0);
-        this.ship04 = new Spaceship(this, game.config.width - 96, 340, 'bottle', 0, 10).setOrigin(0,0);
+        this.ship01 = new Spaceship(this, game.config.width + 192, 132, 'spaceship', 0, 30).setOrigin(0, 0);
+        this.ship02 = new Spaceship(this, game.config.width + 96, 196, 'bottle', 0, 20).setOrigin(0, 0);
+        this.ship03 = new Spaceship(this, game.config.width, 260, 'net', 0, 10).setOrigin(0, 0);
+        this.ship04 = new Spaceship(this, game.config.width - 96, 340, 'bottle', 0, 10).setOrigin(0, 0);
 
         //船的运动
-        this.ship05 = new Fishship(this, 600, 70, 'fishship').setOrigin(0,0);
+        this.ship05 = new Fishship(this, 600, 70, 'fishship').setOrigin(0, 0);
         //鱼线
-        this.ship06 = new Fishwire(this, 630, -70, 'wire').setOrigin(this.x,this.y);
+        this.ship06 = new Fishwire(this, 630, -70, 'wire').setOrigin(this.x, this.y);
         //鱼线
-        this.ship07 = new Fishship(this, 625, 170, 'hook').setOrigin(0,0);
+        this.ship07 = new Fishship(this, 625, 170, 'hook').setOrigin(0, 0);
 
         // define keys
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -70,13 +70,11 @@ class Play extends Phaser.Scene {
         // animation config
         this.anims.create({
             key: 'explode',
-            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9, first: 0}),
+            frames: this.anims.generateFrameNumbers('explosion', { start: 0, end: 9, first: 0 }),
             frameRate: 30
         });
 
-        // player 1 score
-        this.p1Score = 0;
-        // score display
+        //score
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
@@ -89,6 +87,10 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
+        this.p1Score = 0;
+        var timedEvent;
+        // 每1000ms使用onEvent()一次
+        timedEvent = this.time.addEvent({ delay: 1000, callback: this.onEvent, callbackScope: this, loop: true})
         this.scoreLeft = this.add.text(69, 54, this.p1Score, scoreConfig);
 
         //typeface for ending
@@ -99,12 +101,11 @@ class Play extends Phaser.Scene {
             color: '#000000',
             align: 'right',
             padding: {
-                top:5,
-                bottom:5,
+                top: 5,
+                bottom: 5,
             },
             fixedWidth: 100
         }
-
 
         //get timer
         //timer tutorial: https://rexrainbow.github.io/phaser3-rex-notes/docs/site/timer/
@@ -112,7 +113,7 @@ class Play extends Phaser.Scene {
             delay: 1000,
             callback: this.isTiming,
             callbackScope: this,
-            repeat: (game.settings.gameTimer/1000)+1,
+            repeat: (game.settings.gameTimer / 1000) + 1,
         });
 
         //game over flag
@@ -121,8 +122,8 @@ class Play extends Phaser.Scene {
         //四段加速
         endConfig.fixedWidth = 0;
 
-        this.clock = this.time.delayedCall(game.settings.gameTimer, () =>{  
-            this.add.text(game.config.width/2, game.config.height/2 - 180, 'Want some challenge?', endConfig).setOrigin(0.5); 
+        this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
+            this.add.text(game.config.width / 2, game.config.height / 2 - 180, 'Want some challenge?', endConfig).setOrigin(0.5);
 
             // this.time.events.add(2000, function() {    
 
@@ -130,28 +131,28 @@ class Play extends Phaser.Scene {
             // game.add.tween('Want some challenge?').to({alpha: 0}, 1500, Phaser.Easing.Linear.None, true);}, this); 渐进渐出效果 暂时不会用……
 
             game.settings = {
-                spaceshipSpeed: game.settings.spaceshipSpeed+1.5,   
+                spaceshipSpeed: game.settings.spaceshipSpeed + 1.5,
             }
         }, null, this);
 
-        this.clock = this.time.delayedCall(game.settings.gameTimer+30000, () =>{  
-            this.add.text(game.config.width/2, game.config.height/2 - 180, 'Want a little bit Faster?', endConfig).setOrigin(0.5); 
+        this.clock = this.time.delayedCall(game.settings.gameTimer + 30000, () => {
+            this.add.text(game.config.width / 2, game.config.height / 2 - 180, 'Want a little bit Faster?', endConfig).setOrigin(0.5);
             game.settings = {
-                spaceshipSpeed: game.settings.spaceshipSpeed+2.5,   
+                spaceshipSpeed: game.settings.spaceshipSpeed + 2.5,
             }
         }, null, this);
 
-        this.clock = this.time.delayedCall(game.settings.gameTimer+60000, () =>{  
-            this.add.text(game.config.width/2, game.config.height/2 - 180, 'Do you want more speed?', endConfig).setOrigin(0.5); 
+        this.clock = this.time.delayedCall(game.settings.gameTimer + 60000, () => {
+            this.add.text(game.config.width / 2, game.config.height / 2 - 180, 'Do you want more speed?', endConfig).setOrigin(0.5);
             game.settings = {
-                spaceshipSpeed: game.settings.spaceshipSpeed+3.5,   
+                spaceshipSpeed: game.settings.spaceshipSpeed + 3.5,
             }
         }, null, this);
 
-        this.clock = this.time.delayedCall(game.settings.gameTimer+90000, () =>{  
-            this.add.text(game.config.width/2, game.config.height/2 - 180, 'Final Speed!', endConfig).setOrigin(0.5); 
+        this.clock = this.time.delayedCall(game.settings.gameTimer + 90000, () => {
+            this.add.text(game.config.width / 2, game.config.height / 2 - 180, 'Final Speed!', endConfig).setOrigin(0.5);
             game.settings = {
-                spaceshipSpeed: game.settings.spaceshipSpeed+4.5,   
+                spaceshipSpeed: game.settings.spaceshipSpeed + 4.5,
             }
         }, null, this);
 
@@ -165,7 +166,7 @@ class Play extends Phaser.Scene {
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene");
         }
-        
+
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
@@ -181,8 +182,9 @@ class Play extends Phaser.Scene {
 
         // 当玩家爆炸，游戏结束
         if (this.gameOver) {
-             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press R to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
+            this.p1Score = -1; // 重置score为0（这边用-1是因为每1s刷新一次）
+            this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press R to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
         }
 
         //scroll starfield
@@ -193,12 +195,12 @@ class Play extends Phaser.Scene {
         this.starfield4.tilePositionX -= 1;
 
         this.starfield0.tilePositionY -= 0.3;
-        this.starfield1.tilePositionY -= 0.3;   
-        this.starfield2.tilePositionY -= 0.3;   
-        this.starfield3.tilePositionY -= 0.3;   
-        this.starfield4.tilePositionY -= 0.3; 
+        this.starfield1.tilePositionY -= 0.3;
+        this.starfield2.tilePositionY -= 0.3;
+        this.starfield3.tilePositionY -= 0.3;
+        this.starfield4.tilePositionY -= 0.3;
 
-        if (!this.gameOver) {               
+        if (!this.gameOver) {
             this.p1Rocket.update();         // update rocket sprite
             this.ship01.update();           // update spaceships (x4)
             this.ship02.update();
@@ -207,13 +209,13 @@ class Play extends Phaser.Scene {
             this.ship05.update();
             this.ship06.update();
             this.ship07.update();
-        }             
+        }
         // check collisions
-        if(this.checkCollision(this.p1Rocket, this.ship04)) {
+        if (this.checkCollision(this.p1Rocket, this.ship04)) {
             //this.shipExplode(this.ship04); 
             this.rocketExplode(this.p1Rocket.x, this.p1Rocket.y);
         }
-        if(this.checkCollision(this.p1Rocket, this.ship03)) {
+        if (this.checkCollision(this.p1Rocket, this.ship03)) {
             //this.shipExplode(this.ship03); 
             this.rocketExplode(this.p1Rocket.x, this.p1Rocket.y);
         }
@@ -229,11 +231,11 @@ class Play extends Phaser.Scene {
 
     checkCollision(rocket, ship) {
         // simple AABB checking
-        if (rocket.x < ship.x + ship.width && 
-            rocket.x + rocket.width > ship.x && 
+        if (rocket.x < ship.x + ship.width &&
+            rocket.x + rocket.width > ship.x &&
             rocket.y < ship.y + ship.height &&
-            rocket.height + rocket.y > ship. y) {
-                return true;
+            rocket.height + rocket.y > ship.y) {
+            return true;
         } else {
             return false;
         }
@@ -251,5 +253,23 @@ class Play extends Phaser.Scene {
             this.gameOver = true;
         });
         this.sound.play('sfx_explosion');
+    }
+
+    // change score
+    onEvent(){
+        let scoreConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100
+        }
+        this.p1Score += 1; // 每次使用该function的时候， p1score + 1
+        this.scoreLeft = this.add.text(69, 54, this.p1Score, scoreConfig);
     }
 }
