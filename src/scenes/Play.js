@@ -90,7 +90,7 @@ class Play extends Phaser.Scene {
         this.p1Score = 0;
         var timedEvent;
         // 每1000ms使用onEvent()一次
-        timedEvent = this.time.addEvent({ delay: 1000, callback: this.onEvent, callbackScope: this, loop: true})
+        timedEvent = this.time.addEvent({ delay: 1000, callback: this.onEvent, callbackScope: this, loop: true});
         this.scoreLeft = this.add.text(69, 54, this.p1Score, scoreConfig);
 
         //typeface for ending
