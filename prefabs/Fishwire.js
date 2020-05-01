@@ -6,16 +6,21 @@ class Fishwire extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-        // move ship right
-        this.x -= game.settings.spaceshipSpeed-1;
+        // move wire left
+        this.x -= game.settings.spaceshipSpeed-0.99555;
+        this.y += game.settings.spaceshipSpeed-1.5;
+
         // wraparound from left to right edge
         if (this.x <= 0-this.width) {
             this.reset();
         }
+
+        if (this.y >= 180){
+            this.y = -93;
+        }
     }
 
     reset() {
-        this.x = 630 ;
-
+        this.x = 600;
     }
 }

@@ -9,7 +9,7 @@ class Fishship extends Phaser.GameObjects.Sprite {
         // move ship right
         this.x -= game.settings.spaceshipSpeed-1;
         // wraparound from left to right edge
-        if (this.x <= 0-this.width) {
+        if (this.x <= 60-this.width) {
             this.reset();
         }
     }
