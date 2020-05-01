@@ -48,17 +48,17 @@ class Play extends Phaser.Scene {
         this.p1Rocket = new Rocket(this, game.config.width / 2 - 8, 350, 'rocket').setOrigin(0, 0);
 
         // add spaceships (x4)
-        this.ship01 = new Spaceship(this, game.config.width + 192, 132, 'spaceship', 0, 30).setOrigin(0, 0);
-        this.ship02 = new Spaceship(this, game.config.width + 96, 196, 'bottle', 0, 20).setOrigin(0, 0);
-        this.ship03 = new Spaceship(this, game.config.width, 260, 'net', 0, 10).setOrigin(0, 0);
+        this.ship01 = new Spaceship(this, 4000, 132, 'spaceship', 0, 30).setOrigin(0, 0);
+        this.ship02 = new Spaceship(this, 8000, 196, 'bottle', 0, 20).setOrigin(0, 0);
+        this.ship03 = new Spaceship(this, 12000, 260, 'net', 0, 10).setOrigin(0, 0);
         this.ship04 = new Spaceship(this, game.config.width - 96, 340, 'bottle', 0, 10).setOrigin(0, 0);
 
         //船的运动
-        this.ship05 = new Fishship(this, 600, 70, 'fishship').setOrigin(0, 0);
+        this.ship05 = new Fishship(this, 550, 70, 'fishship').setOrigin(0, 0);
         //鱼线
-        this.ship06 = new Fishwire(this, 630, -70, 'wire').setOrigin(this.x, this.y);
-        //鱼线
-        this.ship07 = new Fishship(this, 625, 170, 'hook').setOrigin(0, 0);
+        this.ship06 = new Fishwire(this, 600, -90, 'wire').setOrigin(this.x, this.y);
+        //鱼钩
+        this.ship07 = new Fishhook(this, 595, 140, 'hook').setOrigin(0, 0);
 
         // define keys
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -119,38 +119,34 @@ class Play extends Phaser.Scene {
         //game over flag
         this.gameOver = false;
 
+        this.add.text(game.config.width / 2, game.config.height / 2 - 180, 'LEVEL1', endConfig).setOrigin(0.5);
+
         //四段加速
         endConfig.fixedWidth = 0;
 
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width / 2, game.config.height / 2 - 180, 'Want some challenge?', endConfig).setOrigin(0.5);
-
-            // this.time.events.add(2000, function() {    
-
-            // game.add.tween('Want some challenge?').to({y: 0}, 1500, Phaser.Easing.Linear.None, true);
-            // game.add.tween('Want some challenge?').to({alpha: 0}, 1500, Phaser.Easing.Linear.None, true);}, this); 渐进渐出效果 暂时不会用……
-
+            this.add.text(game.config.width / 2, game.config.height / 2 - 180, 'LEVEL2', endConfig).setOrigin(0.5);
             game.settings = {
                 spaceshipSpeed: game.settings.spaceshipSpeed + 1.5,
             }
         }, null, this);
 
         this.clock = this.time.delayedCall(game.settings.gameTimer + 30000, () => {
-            this.add.text(game.config.width / 2, game.config.height / 2 - 180, 'Want a little bit Faster?', endConfig).setOrigin(0.5);
+            this.add.text(game.config.width / 2, game.config.height / 2 - 180, 'LEVEL3', endConfig).setOrigin(0.5);
             game.settings = {
                 spaceshipSpeed: game.settings.spaceshipSpeed + 2.5,
             }
         }, null, this);
 
         this.clock = this.time.delayedCall(game.settings.gameTimer + 60000, () => {
-            this.add.text(game.config.width / 2, game.config.height / 2 - 180, 'Do you want more speed?', endConfig).setOrigin(0.5);
+            this.add.text(game.config.width / 2, game.config.height / 2 - 180, 'LEVEL4', endConfig).setOrigin(0.5);
             game.settings = {
                 spaceshipSpeed: game.settings.spaceshipSpeed + 3.5,
             }
         }, null, this);
 
         this.clock = this.time.delayedCall(game.settings.gameTimer + 90000, () => {
-            this.add.text(game.config.width / 2, game.config.height / 2 - 180, 'Final Speed!', endConfig).setOrigin(0.5);
+            this.add.text(game.config.width / 2, game.config.height / 2 - 180, 'LEVEL5', endConfig).setOrigin(0.5);
             game.settings = {
                 spaceshipSpeed: game.settings.spaceshipSpeed + 4.5,
             }
@@ -211,6 +207,10 @@ class Play extends Phaser.Scene {
             this.ship07.update();
         }
         // check collisions
+        if (this.checkCollision(this.p1Rocket, this.ship07)) {
+            //this.shipExplode(this.ship07); 
+            this.rocketExplode(this.p1Rocket.x, this.p1Rocket.y);
+        }
         if (this.checkCollision(this.p1Rocket, this.ship04)) {
             //this.shipExplode(this.ship04); 
             this.rocketExplode(this.p1Rocket.x, this.p1Rocket.y);
