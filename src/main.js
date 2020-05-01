@@ -12,8 +12,9 @@ let game = new Phaser.Game(config);
 // define game settings
 game.settings = {
     spaceshipSpeed: 2,
-    gameTimer: 45000  
+    rocketSpeed: 3,
+    gameTimer: 30000  
 }
 
 // reserve keyboard vars
-let keyR, keyLEFT, keyRIGHT, keyUP, keyDOWN;
+let keyR, keyLEFT, keyRIGHT, keyUP, keyDOWN, keyS;
