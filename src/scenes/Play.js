@@ -178,7 +178,7 @@ class Play extends Phaser.Scene {
 
         // 当玩家爆炸，游戏结束
         if (this.gameOver) {
-            this.p1Score = -1; // 重置score为0（这边用-1是因为每1s刷新一次）
+            //this.p1Score = -1; // 重置score为0（这边用-1是因为每1s刷新一次）
             this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER', scoreConfig).setOrigin(0.5);
             this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press R to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
         }
@@ -269,7 +269,9 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.p1Score += 1; // 每次使用该function的时候， p1score + 1
+        if(!this.gameOver) {
+            this.p1Score += 1; // 每次使用该function的时候， p1score + 1
+        }
         this.scoreLeft = this.add.text(69, 54, this.p1Score, scoreConfig);
     }
 }
