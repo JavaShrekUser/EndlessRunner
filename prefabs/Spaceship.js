@@ -1,9 +1,8 @@
 // Spaceship prefab
 class Spaceship extends Phaser.GameObjects.Sprite {
-    constructor(scene, x, y, texture, frame, pointValue) {
+    constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
         scene.add.existing(this);   // add to existing scene, displayList, updateList
-        this.points = pointValue;   // store pointValue
     }
 
     update() {
@@ -17,9 +16,7 @@ class Spaceship extends Phaser.GameObjects.Sprite {
 
     reset() {
         this.x = game.config.width;
-        this.y = this. y -=50;
-        if (this.y <= 100){
-            this.y = 400;
-        }
+        this.y = Phaser.Math.Between(140,430);
+
     }
 }
