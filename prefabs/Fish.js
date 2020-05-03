@@ -19,7 +19,7 @@ class Fish extends Phaser.GameObjects.Sprite {
         // 上下运动
             if (keyUP.isDown && this.y >= 140) {
                 this.y -= 3;
-            } else if (keyDOWN.isDown && this.y <= 430) {
+            } else if (keyDOWN.isDown && this.y <= 405) {
                 this.y += 3;
             }
     }
