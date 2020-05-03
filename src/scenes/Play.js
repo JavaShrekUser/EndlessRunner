@@ -29,14 +29,26 @@ class Play extends Phaser.Scene {
         this.load.image('waterBase', './assets/waterBase.png');
         this.load.image('waves', './assets/waves.png');
         this.load.image('UInew', './assets/UInew.png');
+        this.load.audio('choco','./assets/chocobirdsrun.mp3');
 
 
  
         // load spritesheet
         this.load.spritesheet('explosion', './assets/explosion.png', { frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9 });
+        this.load.spritesheet('player', './assets/player.png', { frameWidth: 63, frameHeight: 32, startFrame: 0, endFrame: 7 });
     }
 
     create() {
+
+        this.bgm = this.sound.add('choco',{
+            mute : false,
+            volume : 0.5,
+            rate : 3,
+            loop : true
+        });
+
+        this.sound.play('choco');
+
         // place tile sprite
         this.sand1 = this.add.tileSprite(0, 0, 640, 480, 'sand1').
         setOrigin(0, 0);
@@ -114,19 +126,28 @@ class Play extends Phaser.Scene {
 
 
         // add rocket (p1)
-        this.p1Rocket = new Rocket(this, game.config.width / 2 - 8, 350, 'rocket').setOrigin(0, 0);
+        this.p1Rocket = new Rocket(this, game.config.width / 2 - 8, 350, 'player').setOrigin(0, 0);
+        this.anims.create({
+            key: 'p1Moving',
+            repeat: -1,
+            frames: this.anims.generateFrameNumbers('player', {start: 0, end: 7, first: 0}),
+            frameRate: 6
+        });
         this.p1Rocket.setDepth(99999);
 
         // add spaceships (x4)
-        this.ship01 = new Spaceship(this, 4000, 132, 'tire').setOrigin(0, 0);
+        this.ship01 = new Spaceship(this, 12000, 132, 'tire').setOrigin(0, 0);
         this.ship02 = new Spaceship(this, 8000, 196, 'beer').setOrigin(0, 0);
-        this.ship03 = new Spaceship(this, 12000, 260, 'fishNet').setOrigin(0, 0);
+        this.ship03 = new Spaceship(this, 4000, 260, 'fishNet').setOrigin(0, 0);
         this.ship04 = new Spaceship(this, game.config.width - 96, 340, 'beer').setOrigin(0, 0);
+        this.ship08 = new Spaceship(this, game.config.width, 190, 'tire').setOrigin(0, 0);
+        
 
         this.ship01.setDepth(99999);
         this.ship02.setDepth(99999);
         this.ship03.setDepth(99999);
         this.ship04.setDepth(99999);
+        this.ship08.setDepth(99999);
 
         //船的运动
         this.ship05 = new Fishship(this, 550, 70, 'boat').setOrigin(0, 0);
@@ -204,34 +225,38 @@ class Play extends Phaser.Scene {
         this.clock = this.time.delayedCall(game.settings.gameTimer + 30000, () => {
             this.add.text(game.config.width / 2 + 65, game.config.height / 2 - 182, 'LEVEL3', endConfig).setOrigin(0.5).setDepth(99999);
             game.settings = {
-                spaceshipSpeed: game.settings.spaceshipSpeed + 2.5,
+                spaceshipSpeed: game.settings.spaceshipSpeed + 2,
             }
         }, null, this);
 
         this.clock = this.time.delayedCall(game.settings.gameTimer + 60000, () => {
             this.add.text(game.config.width / 2 + 65, game.config.height / 2 - 182, 'LEVEL4', endConfig).setOrigin(0.5).setDepth(99999);
             game.settings = {
-                spaceshipSpeed: game.settings.spaceshipSpeed + 3.5,
+                spaceshipSpeed: game.settings.spaceshipSpeed + 3,
             }
         }, null, this);
 
         this.clock = this.time.delayedCall(game.settings.gameTimer + 90000, () => {
             this.add.text(game.config.width / 2 + 65, game.config.height / 2 - 182, 'LEVEL5', endConfig).setOrigin(0.5).setDepth(99999);
             game.settings = {
-                spaceshipSpeed: game.settings.spaceshipSpeed + 4.5,
+                spaceshipSpeed: game.settings.spaceshipSpeed + 4,
             }
         }, null, this);
 
     }
 
     update() {
+
+        this.p1Rocket.play('p1Moving',true);
         // check key input for restart / menu
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
+            game.sound.stopAll();
             
         }
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene");
+            game.sound.stopAll();
         }
 
         let scoreConfig = {
@@ -284,26 +309,32 @@ class Play extends Phaser.Scene {
             this.ship05.update();
             this.ship06.update();
             this.ship07.update();
+            this.ship08.update();
+
         }
         // check collisions
+        if (this.checkCollision(this.p1Rocket, this.ship08)) {
+            this.shipExplode(this.ship08); 
+            this.rocketExplode(this.p1Rocket.x, this.p1Rocket.y);
+        }
         if (this.checkCollision(this.p1Rocket, this.ship07)) {
-            //this.shipExplode(this.ship07); 
+            this.shipExplode(this.ship07); 
             this.rocketExplode(this.p1Rocket.x, this.p1Rocket.y);
         }
         if (this.checkCollision(this.p1Rocket, this.ship04)) {
-            //this.shipExplode(this.ship04); 
+            this.shipExplode(this.ship04); 
             this.rocketExplode(this.p1Rocket.x, this.p1Rocket.y);
         }
         if (this.checkCollision(this.p1Rocket, this.ship03)) {
-            //this.shipExplode(this.ship03); 
+            this.shipExplode(this.ship03); 
             this.rocketExplode(this.p1Rocket.x, this.p1Rocket.y);
         }
         if (this.checkCollision(this.p1Rocket, this.ship02)) {
-            //this.shipExplode(this.ship02);
+            this.shipExplode(this.ship02);
             this.rocketExplode(this.p1Rocket.x, this.p1Rocket.y);
         }
         if (this.checkCollision(this.p1Rocket, this.ship01)) {
-            //this.shipExplode(this.ship01);
+            this.shipExplode(this.ship01);
             this.rocketExplode(this.p1Rocket.x, this.p1Rocket.y);
         }
     }
@@ -324,15 +355,27 @@ class Play extends Phaser.Scene {
     // 玩家爆炸
     rocketExplode(x, y) {
         this.p1Rocket.alpha = 0;
+        this.p1Rocket.reset();
+
         let boom = this.add.sprite(x, y, 'explosion').setOrigin(0, 0);
+
         boom.anims.play('explode');
         boom.on('animationcomplete', () => {
             boom.destroy();
             this.gameOver = true;
 
         });
-        //this.sound.play('sfx_explosion');
+        this.sound.play('sfx_explosion');
     }
+    
+    //障碍物爆炸
+    shipExplode(ship){
+
+        //temporarily hide ship
+        ship.alpha = 0;
+        ship.reset();
+    }
+
 
     // change score
     onEvent(){
