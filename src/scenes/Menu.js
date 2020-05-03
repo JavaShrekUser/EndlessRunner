@@ -56,12 +56,12 @@ class Menu extends Phaser.Scene {
 
         this.add.text(centerX, centerY - 70, 'Where  is  my  play  yard', titleConfig).setOrigin(0.5);
         this.add.text(centerX, centerY + 50, 'Press → for story and tutorial', menuConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY +50 + textSpacer, 'Press S to directly start the game', menuConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY +50 + textSpacer, 'Press ↑ to directly start the game', menuConfig).setOrigin(0.5);
     
         
         // define keys
-        keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         
         
         
@@ -73,7 +73,7 @@ class Menu extends Phaser.Scene {
             this.scene.start('bgStoryScene');    
         }
 
-        if (Phaser.Input.Keyboard.JustDown(keyS)) {
+        if (Phaser.Input.Keyboard.JustDown(keyUP)) {
             this.sound.play('sfx_select');
             this.scene.start('playScene');    
         }
