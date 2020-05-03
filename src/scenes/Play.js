@@ -59,43 +59,32 @@ class Play extends Phaser.Scene {
         setOrigin(0, 0);
         this.smallStone.setDepth(1450);
 
-
         this.deepShip = this.add.tileSprite(0, 0, 640, 480, 'deepShip').
         setOrigin(0, 0);
         this.deepShip.setDepth(1400);
 
-        //鱼线
         this.wire = new Fishwire(this, 600, -90, 'wire').setOrigin(this.x, this.y);
         this.wire.setDepth(3800);
 
         this.waterBase = this.add.tileSprite(0, 0, 640, 480, 'waterBase').
         setOrigin(0, 0);
         this.waterBase.setDepth(1000);
-        
 
         this.bubble = this.add.tileSprite(0, 0, 640, 480, 'bubble').
         setOrigin(0, 0);
         this.bubble.setDepth(2000);
 
-        
-
         this.leftFish = this.add.tileSprite(0, 0, 640, 480, 'leftFish').
         setOrigin(0, 0);
         this.leftFish.setDepth(2050);
-
-        
 
         this.rightFish = this.add.tileSprite(0, 0, 640, 480, 'rightFish').
         setOrigin(0, 0);
         this.rightFish.setDepth(2060);
 
-        
-
         this.skyTop = this.add.tileSprite(0, 0, 640, 480, 'skyTop').
         setOrigin(0, 0);
         this.skyTop.setDepth(4000);
-
-        
 
         this.skyMid = this.add.tileSprite(0, 0, 640, 480, 'skyMid').
         setOrigin(0, 0);
@@ -107,15 +96,15 @@ class Play extends Phaser.Scene {
 
         this.cloudMid = this.add.tileSprite(0, 0, 640, 480, 'cloudMid').
         setOrigin(0, 0);
-        this.cloudMid.setDepth(4300);
-        
+        this.cloudMid.setDepth(4300); 
+
         this.cloudTop = this.add.tileSprite(0, 0, 640, 480, 'cloudTop').
         setOrigin(0, 0);
         this.cloudTop.setDepth(4200);
 
         this.UInew = this.add.tileSprite(-60, 0, 640, 480, 'UInew').setScale(1.2,1.5).
         setOrigin(0, 0);
-        this.UInew.setDepth(5000);
+        this.UInew.setDepth(99991);
 
 
 
@@ -133,22 +122,22 @@ class Play extends Phaser.Scene {
         this.tire1 = new Obstacle(this, 12000, 132, 'tire').setOrigin(0, 0);
         this.beer1 = new Obstacle(this, 8000, 196, 'beer').setOrigin(0, 0);
         this.fishNet = new Obstacle(this, 5000, 260, 'fishNet').setOrigin(0, 0);
-        this.beer2 = new Obstacle(this, game.config.width - 96, 340, 'beer').setOrigin(0, 0);
-        this.tire2 = new Obstacle(this, game.config.width, 190, 'tire').setOrigin(0, 0);
+        this.beer2 = new Obstacle(this, 830, 340, 'beer').setOrigin(0, 0);
+        this.tire2 = new Obstacle(this, 670, 190, 'tire').setOrigin(0, 0);
         
 
-        this.tire1.setDepth(99999);
-        this.beer1.setDepth(99999);
-        this.fishNet.setDepth(99999);
-        this.beer2.setDepth(99999);
-        this.tire2.setDepth(99999);
+        this.tire1.setDepth(99990);
+        this.beer1.setDepth(99990);
+        this.fishNet.setDepth(99990);
+        this.beer2.setDepth(99990);
+        this.tire2.setDepth(99990);
 
         //船的运动
         this.boat = new Fishship(this, 550, 70, 'boat').setOrigin(0, 0);
-        this.boat.setDepth(99999);
+        this.boat.setDepth(99990);
         //鱼钩
         this.hook = new Fishhook(this, 595, 140, 'hook').setOrigin(0, 0);
-        this.hook.setDepth(99999);
+        this.hook.setDepth(99990);
 
         // define keys
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
@@ -168,8 +157,8 @@ class Play extends Phaser.Scene {
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            backgroundColor: '#00000000',
+            color: '#E0FFF6',
             align: 'right',
             padding: {
                 top: 5,
@@ -182,15 +171,18 @@ class Play extends Phaser.Scene {
         var timedEvent;
         // 每1000ms使用onEvent()一次
         timedEvent = this.time.addEvent({ delay: 1000, callback: this.onEvent, callbackScope: this, loop: true});
-        this.scoreLeft = this.add.text(199, 37, this.p1Score, scoreConfig);
+        this.add.text(200, game.config.height / 2 - 182, 'Grade: ', scoreConfig).setOrigin(0.5).setDepth(99999);
+        scoreConfig.backgroundColor = '#9c7b5a'
+        scoreConfig.fixedWidth = 70;
+        this.scoreLeft = this.add.text(280, game.config.height / 2 - 182, this.p1Score, scoreConfig).setOrigin(0.5);
         this.scoreLeft.setDepth(99999);
 
         //typeface for ending
-        let endConfig = {
-            fontFamily: 'fantasy',
+        let levelConfig = {
+            fontFamily: 'Courier',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#000000',
+            backgroundColor: '#9c7b5a',
+            color: '#E0FFF6',
             align: 'right',
             padding: {
                 top: 5,
@@ -199,43 +191,45 @@ class Play extends Phaser.Scene {
             fixedWidth: 100
         }
 
+
         //game over flag
         this.gameOver = false;
 
         this.time.paused = false;
 
-        this.add.text(game.config.width / 2 + 65, game.config.height / 2 - 182, 'LEVEL1', endConfig).setOrigin(0.5).setDepth(99999);
+        this.add.text(game.config.width / 2 + 125, game.config.height / 2 - 182, 'LEVEL1', levelConfig).setOrigin(0.5).setDepth(99999);
 
         //四段加速
-        endConfig.fixedWidth = 0;
+        levelConfig.fixedWidth = 0;
 
-        this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width / 2 + 65, game.config.height / 2 - 182, 'LEVEL2', endConfig).setOrigin(0.5).setDepth(99999);
+        this.clock = this.time.delayedCall(game.settings.gameTimer-10000, () => {
+            this.add.text(game.config.width / 2 + 125, game.config.height / 2 - 182, 'LEVEL2', levelConfig).setOrigin(0.5).setDepth(99999);
             game.settings = {
                 fishSpeed: game.settings.fishSpeed + 1.5,
             }
         }, null, this);
 
-        this.clock = this.time.delayedCall(game.settings.gameTimer + 30000, () => {
-            this.add.text(game.config.width / 2 + 65, game.config.height / 2 - 182, 'LEVEL3', endConfig).setOrigin(0.5).setDepth(99999);
+        this.clock = this.time.delayedCall(game.settings.gameTimer + 20000, () => {
+            this.add.text(game.config.width / 2 + 125, game.config.height / 2 - 182, 'LEVEL3', levelConfig).setOrigin(0.5).setDepth(99999);
             game.settings = {
                 fishSpeed: game.settings.fishSpeed + 2.5,
             }
         }, null, this);
 
-        this.clock = this.time.delayedCall(game.settings.gameTimer + 60000, () => {
-            this.add.text(game.config.width / 2 + 65, game.config.height / 2 - 182, 'LEVEL4', endConfig).setOrigin(0.5).setDepth(99999);
+        this.clock = this.time.delayedCall(game.settings.gameTimer + 50000, () => {
+            this.add.text(game.config.width / 2 + 125, game.config.height / 2 - 182, 'LEVEL4', levelConfig).setOrigin(0.5).setDepth(99999);
             game.settings = {
                 fishSpeed: game.settings.fishSpeed + 3.5,
             }
         }, null, this);
 
         this.clock = this.time.delayedCall(game.settings.gameTimer + 90000, () => {
-            this.add.text(game.config.width / 2 + 65, game.config.height / 2 - 182, 'LEVEL5', endConfig).setOrigin(0.5).setDepth(99999);
+            this.add.text(game.config.width / 2 + 65, game.config.height / 2 - 182, 'LEVEL5', levelConfig).setOrigin(0.5).setDepth(99999);
             game.settings = {
                 fishSpeed: game.settings.fishSpeed + 4.5,
             }
         }, null, this);
+
 
     }
 
@@ -243,21 +237,24 @@ class Play extends Phaser.Scene {
 
         this.p1Fish.play('p1Moving',true);
         // check key input for restart / menu
-        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
+        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
             this.scene.restart();
             game.sound.stopAll();
+            this.sound.play('sfx_select');
             
         }
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             this.scene.start("menuScene");
             game.sound.stopAll();
+            this.sound.play('sfx_select');
         }
 
-        let scoreConfig = {
+
+        let endConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            backgroundColor: '#00000000',
+            color: '#E0FFF6',
             align: 'right',
             padding: {
                 top: 5,
@@ -272,8 +269,9 @@ class Play extends Phaser.Scene {
             this.time.paused = true;
             game.settings.fishSpeed = 2;
             game.settings.gameTimer = 30000;
-            this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER', scoreConfig).setOrigin(0.5).setDepth(99999);
-            this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press R to Restart or ← for Menu', scoreConfig).setOrigin(0.5).setDepth(99999);
+            this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER', endConfig).setOrigin(0.5).setDepth(99999);
+            this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press → to Restart or ← for Menu', endConfig).setOrigin(0.5).setDepth(99999);
+            this.textBack =  this.add.tileSprite(8, 204, 624, 130, 'textBack').setOrigin(0.0).setDepth(99998);
         }
 
         //scroll background
@@ -375,19 +373,19 @@ class Play extends Phaser.Scene {
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
+            backgroundColor: '#9c7b5a',
+            color: '#E0FFF6',
             align: 'right',
             padding: {
                 top: 5,
                 bottom: 5,
             },
-            fixedWidth: 100
+            fixedWidth: 70
         }
         if(!this.gameOver) {
             this.p1Score += 1; // 每次使用该function的时候， p1score + 1
         }
-        this.scoreLeft = this.add.text(199, 37, this.p1Score, scoreConfig);
+        this.scoreLeft = this.add.text(280, game.config.height / 2 - 182, this.p1Score, scoreConfig).setOrigin(0.5);
         this.scoreLeft.setDepth(99999);
     }
 }
