@@ -27,10 +27,6 @@ tricky but we finally finished it in the limted time period that we have.
 ...have a great visual style? Does it use music or art that you created? Are you trying something new or clever with the endless runner form? (5)
 INCREDIBLE and GREAT art done by ourself. We want to express the idea of protecting the ocean environment through this game.
 
-
-
-
-
 */
 
 
